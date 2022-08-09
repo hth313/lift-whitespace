@@ -1,6 +1,6 @@
 cabal-version:      2.4
 name:               lift-whitespace
-version:            0.9.0.0
+version:            0.9.1.0
 
 -- A short (one-line) description of the package.
 synopsis: Detects (annoying) white-space plug-in for Sonatype Lift
