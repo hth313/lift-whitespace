@@ -9,4 +9,4 @@ Tab characters inside the files are also flagged, but they are
 allowed for `Makefile` or `*.make` files as a leading tab
 character is fundamental to `make`.
 
-<https://lift.sonatype.com/api/badge/github.com/hth313/lift-whitespace>
+![](https://lift.sonatype.com/api/badge/github.com/hth313/lift-whitespace)
