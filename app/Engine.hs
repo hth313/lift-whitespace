@@ -46,7 +46,7 @@ scanfile path =
             | (_, xs@(_:_)) <- spanEnd isSpace line =
                 let s = case xs of
                           [_] -> mempty
-                          otherwise -> "s"
+                          _ -> "s"
                 in Just $ badSpace $
                      count (length xs) <> " trailing whitespace" <> s
             | otherwise = Nothing
@@ -54,7 +54,7 @@ scanfile path =
             case filter ('\t' ==) (trimEnd line) of
               [] -> Nothing
               [_] -> Just $ badSpace $ "tab character"
-              otherwise -> Just $ badSpace $ "tab characters"
+              _ -> Just $ badSpace $ "tab characters"
           badSpace message = BadWhiteSpace "bad whitespace" (pack message) packedPath n
 
       packedPath = pack path
