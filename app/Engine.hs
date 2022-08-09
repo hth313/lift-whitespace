@@ -74,14 +74,14 @@ scanfile path =
       fileEnding = "file ending"
 
   in do
-    contents <- liftM lines (readFile' path)
+    contents <- fmap lines (readFile' path)
     tailChars <- withBinaryFile path ReadMode getTailChars
     pure $ concatMap analyze1 (zip [1..] contents) <> tailAnalyze (length contents) tailChars
 
 makefile "Makefile" = True
 makefile path = case takeExtension path of
                   ".make" -> True
-                  otherwise -> False
+                  _ -> False
 
 count 1 = "one"
 count 2 = "two"
