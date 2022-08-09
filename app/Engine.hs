@@ -48,19 +48,35 @@ scanfile path =
                           [_] -> mempty
                           otherwise -> "s"
                 in Just $ badSpace $
-                     count (length xs) <> " trailing whitespace" <> s <>
-                     " in line " <> show n
+                     count (length xs) <> " trailing whitespace" <> s
             | otherwise = Nothing
           tabs =
             case filter ('\t' ==) (trimEnd line) of
               [] -> Nothing
-              [_] -> Just $ badSpace $ "tab character in line " <> show n
-              otherwise -> Just $ badSpace $ "tab characters in line " <> show n
+              [_] -> Just $ badSpace $ "tab character"
+              otherwise -> Just $ badSpace $ "tab characters"
           badSpace message = BadWhiteSpace "bad whitespace" (pack message) packedPath n
-          packedPath = pack path
+
+      packedPath = pack path
+
+      getTailChars h = do
+        sz <- hFileSize h
+        when (sz > 10) (hSeek h SeekFromEnd (-8))
+        liftM reverse (hGetContents' h)
+
+      tailAnalyze _ [] = mempty
+      tailAnalyze n ('\n':'\n':_) =
+        [BadWhiteSpace fileEnding "extra newlines at end of file" packedPath n]
+      tailAnalyze n ('\n':_) = mempty
+      tailAnalyze n (c:_)
+        | isSpace c = [BadWhiteSpace fileEnding "whitespace at end of file" packedPath n]
+        | otherwise = mempty
+      fileEnding = "file ending"
+
   in do
-    lines <- liftM lines (readFile path)
-    pure $ concatMap analyze1 (zip [1..] lines)
+    contents <- liftM lines (readFile' path)
+    tailChars <- withBinaryFile path ReadMode getTailChars
+    pure $ concatMap analyze1 (zip [1..] contents) <> tailAnalyze (length contents) tailChars
 
 makefile "Makefile" = True
 makefile path = case takeExtension path of
