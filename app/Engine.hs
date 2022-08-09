@@ -62,7 +62,7 @@ scanfile path =
       getTailChars h = do
         sz <- hFileSize h
         when (sz > 10) (hSeek h SeekFromEnd (-8))
-        liftM reverse (hGetContents' h)
+        fmap reverse (hGetContents' h)
 
       tailAnalyze _ [] = mempty
       tailAnalyze n ('\n':'\n':_) =

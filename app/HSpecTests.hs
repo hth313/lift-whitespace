@@ -1,18 +1,17 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Main where
 
-import Control.Monad
 import Engine
 import Test.Hspec
 
 main :: IO ()
 main = do
-  run1 <- liftM concat (mapM scanfile [ "example/Spaced1.hs"
-                                      , "example/Spaced2.hs"])
-  run2 <- liftM concat (mapM scanfile [ "example/NotSpaced.hs" ])
-  run3 <- liftM concat (mapM scanfile [ "example/empty" ])
-  run4 <- liftM concat (mapM scanfile [ "example/SpaceAtEnd.hs" ])
-  run5 <- liftM concat (mapM scanfile [ "example/MultiNewLinesEnd.hs" ])
+  run1 <- fmap concat (mapM scanfile [ "example/Spaced1"
+                                     , "example/Spaced2"])
+  run2 <- fmap concat (mapM scanfile [ "example/NotSpaced" ])
+  run3 <- fmap concat (mapM scanfile [ "example/empty" ])
+  run4 <- fmap concat (mapM scanfile [ "example/SpaceAtEnd" ])
+  run5 <- fmap concat (mapM scanfile [ "example/MultiNewLinesEnd" ])
 
   hspec $ do
     it "Unsuccessful run" $ do
@@ -30,53 +29,53 @@ main = do
     expect1 = [ BadWhiteSpace
                   "bad whitespace"
                   "two trailing whitespaces"
-                  "example/Spaced1.hs"
+                  "example/Spaced1"
                   5
               , BadWhiteSpace
                   "bad whitespace"
                   "tab character"
-                  "example/Spaced1.hs"
+                  "example/Spaced1"
                   5
               , BadWhiteSpace
                   "bad whitespace"
                   "six trailing whitespaces"
-                  "example/Spaced1.hs"
+                  "example/Spaced1"
                   9
               , BadWhiteSpace
                   "bad whitespace"
                   "25 trailing whitespaces"
-                  "example/Spaced1.hs"
+                  "example/Spaced1"
                   13
               , BadWhiteSpace
                   "bad whitespace"
                   "one trailing whitespace"
-                  "example/Spaced2.hs"
+                  "example/Spaced2"
                   9
               ]
     expect4 = [ BadWhiteSpace
                     "bad whitespace"
                     "one trailing whitespace"
-                    "example/SpaceAtEnd.hs"
+                    "example/SpaceAtEnd"
                     9
               , BadWhiteSpace
                     "bad whitespace"
                     "five trailing whitespaces"
-                    "example/SpaceAtEnd.hs"
+                    "example/SpaceAtEnd"
                     14
               , BadWhiteSpace
                     "file ending"
                     "whitespace at end of file"
-                    "example/SpaceAtEnd.hs"
+                    "example/SpaceAtEnd"
                     14
               ]
     expect5 = [ BadWhiteSpace
                     "bad whitespace"
                     "one trailing whitespace"
-                    "example/MultiNewLinesEnd.hs"
+                    "example/MultiNewLinesEnd"
                     9
               , BadWhiteSpace
                     "file ending"
                     "extra newlines at end of file"
-                    "example/MultiNewLinesEnd.hs"
+                    "example/MultiNewLinesEnd"
                     15
               ]

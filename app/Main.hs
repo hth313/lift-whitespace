@@ -9,5 +9,5 @@ import Engine
 main :: IO ()
 main = do
   files <- getArgs
-  result <- liftM (encode . concat) (forM files scanfile)
+  result <- fmap (encode . concat) (forM files scanfile)
   L.putStrLn result
