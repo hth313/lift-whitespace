@@ -1,0 +1,8 @@
+Command to build the container:
+% docker build -t lift-haskell-build:1.0 docker-build-image
+
+Interactive run, probably better, just do cabal update, test, build in it...
+% docker run -it -v $PWD:/lift-whitespace -w /lift-whitespace lift-haskell-build:1.0 bash
+
+To actually build it (does not work for some resaon):
+% docker run -v $PWD:/lift-whitespace -u 1000:1000 -w /lift-whitespace lift-haskell-build:1.0 "cabel build && cabal test"
