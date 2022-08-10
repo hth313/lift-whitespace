@@ -7,7 +7,7 @@ cmd=$3
 function run() {
     curl -LO https://github.com/hth313/lift-whitespace/releases/download/0.9.1/lift-whitespace
     chmod +x lift-whitespace
-    ./lift-whitespace $(git ls-files | grep -v lift)
+    ./lift-whitespace $(git ls-files | grep -v lift | grep -v "example/")
 }
 
 [[ "$cmd" = "version" ]] && echo "1"
