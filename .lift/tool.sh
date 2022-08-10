@@ -13,3 +13,6 @@ function run() {
 [[ "$cmd" = "applicable" ]] && echo "true"
 [[ "$cmd" = "run" ]] && run
 [[ -z "$cmd" ]] && echo '{ "version" : 1, "name" : "lift-whitespace" }'
+
+# exit code 0, we always succeed if we got this far
+:
